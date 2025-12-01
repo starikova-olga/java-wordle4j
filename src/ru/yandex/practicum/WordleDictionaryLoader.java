@@ -25,7 +25,7 @@ public class WordleDictionaryLoader {
     }
     public WordleDictionary LoadDictionary(String fileName) throws IOException {
         List<String> words = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("words_ru"), StandardCharsets.UTF_8))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("words_ru.txt"), StandardCharsets.UTF_8))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 words.add(line);
