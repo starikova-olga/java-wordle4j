@@ -46,16 +46,17 @@ WordleDictionary dictionary = loader.LoadDictionary(WORDS_FILE);
 
         while (attemptsLeft > 0) {
             System.out.println("Ждём ввода слова (осталось попыток): " + attemptsLeft + ")");
-            String guess = scanner.nextLine();
+            String candidate = scanner.nextLine();
 
-            if (guess.isEmpty()) {
+            if (candidate.isEmpty()) {
                 log.println("Пользователь воспользовался подсказкой.");
                 String hint = game.getHint();
+
                 log.println("Подсказка: " + hint);
                 continue;
             }
-            log.println("Пользователь ввёл слово: " + guess);
-            String feedBack = game.compareWords(guess, game.analyzeGuess(guess));
+            log.println("Пользователь ввёл слово: " + candidate);
+            String feedBack = game.compareWords(candidate, game.getAnswer());
 
             if (feedBack.equals("+++++")) {
                 log.println("Поздравляем,вы выиграли!");

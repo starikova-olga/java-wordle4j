@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Random;
 
 /*
 в этом классе хранится словарь и состояние игры
@@ -20,15 +19,13 @@ import java.util.Random;
  */
 public class WordleGame {
     private String answer;
-
     private int steps;
-
     private WordleDictionary dictionary;
-
-  private List<String> userInputs;
-private LinkedHashMap<String, String> hints = new LinkedHashMap<>();
+    private List<String> userInputs;
+    private LinkedHashMap<String, String> hints = new LinkedHashMap<>();
 
 public WordleGame(WordleDictionary dictionary) {
+
     this.dictionary = dictionary;
     this.userInputs = new ArrayList<>();
 }
@@ -41,40 +38,26 @@ steps = 0;
 
 
 public String compareWords(String rawCandidate, String solution) {
-    String candidate = WordleDictionary.normaliseWord(rawCandidate);
 
-   
+    String candidate = WordleDictionary.normaliseWord(rawCandidate);
     if (userInputs.contains(candidate) || hints.containsValue(candidate)) {
         throw new IllegalArgumentException("Слово уже было использовано.");
     }
-        StringBuilder feedback = new StringBuilder();
-for (int i = 0; i < candidate.length(); i++) {
-    char candidateChar = candidate.charAt(i);
-    char solutionChar = solution.charAt(i);
-
-    if (candidateChar == solutionChar) {
-        feedback.append("+");
-    } else if (solution.indexOf(candidateChar) != -1) {
-        feedback.append("^");
-    } else {
-        feedback.append("-");
+    StringBuilder feedback = new StringBuilder();
+    for (int i = 0; i < candidate.length(); i++) {
+        char candidateChar = candidate.charAt(i);
+        char solutionChar = solution.charAt(i);
+        if (candidateChar == solutionChar) {
+            feedback.append("+");
+        } else if (solution.indexOf(candidateChar) != -1) {
+            feedback.append("^");
+        } else {
+            feedback.append("-");
+        }
     }
-} return feedback.toString();
-    }
+    return feedback.toString();
+}
 
-
-    //Анализ совпадений слов с ответом
-    public String analyzeGuess(String guess) throws WordNotFoundException {
-
-            if(!dictionary.isWorldInDictionary(guess)) {
-                throw new WordNotFoundException("Слово не найдено в словаре.");
-            }
-
-        int matches = WordleDictionary.compareWordsByLetters(guess, answer);
-        userInputs.add(guess);
-        steps++;
-        return "Совпадений: " + matches;
-    }
     // Метод для предложения слова- подсказки
     public List<String> suggestWord() {
         List<String> suggestions = new ArrayList<>();
@@ -87,19 +70,25 @@ for (int i = 0; i < candidate.length(); i++) {
 }
 // получение подсказки на основе предыдущих вводов
     public String getHint() {
-    String hint = "";
-    if (userInputs.isEmpty()) {
-        hint =dictionary.dictionary.get((int) (Math.random() * dictionary.dictionary.size()));
-    } else {
-        List<String>possibleWords = suggestWord();
-        for (String word : possibleWords) {
-            if (!hints.containsValue(word)) {
-                hint = word;
-                break;
+
+        String hint = "";
+        if (userInputs.isEmpty()) {
+            hint = dictionary.dictionary.get((int) (Math.random() * dictionary.dictionary.size()));
+        } else {
+            List<String> possibleWords = suggestWord();
+            for (String word : possibleWords) {
+                if (!hints.containsValue(word)) {
+                    hint = word;
+                    break;
+                }
             }
+
         }
+        return hint;
     }
-    hints.put("Input " + steps, hint);
-    return hint;
-    }
+    public String getAnswer() {
+return answer;
 }
+
+}
+
