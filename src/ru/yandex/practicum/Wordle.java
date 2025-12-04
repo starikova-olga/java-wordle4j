@@ -43,7 +43,6 @@ public class Wordle {
         }
     }
 
-
     private void playGame(WordleGame game, WordleDictionary dictionary, String mask) throws WordNotFoundException {
         game.startGame();
         log.println("Добро пожаловать в игру");
@@ -66,17 +65,15 @@ public class Wordle {
                 log.println("Подсказка: " + hint);
                 System.out.println("Подсказка: " + hint);
                 continue;
-
-
             } else if (candidate.length() == 5) {
                 userInputs.add(candidate);
             } else {
                 System.out.println("Слово должно состоять из 5 букв.");
                 continue;
             }
+
             try {
                 if (!dictionary.isWordInDictionary(candidate)) {
-
                     System.out.println("Слово не найдено в словаре. Попробуйте другое слово.");
                     log.println("Неверное слово: " + candidate);
                     continue;
@@ -95,12 +92,12 @@ public class Wordle {
             }
             game.decreaseAttempts();
         }
+
         if (game.getSteps() == 0) {
             log.println("Вы проиграли. Загаданное слово было: " + game.getAnswer());
 
             System.out.println("Вы проиграли. Загаданное слово: " + game.getAnswer());
 
         }
-
     }
 }
