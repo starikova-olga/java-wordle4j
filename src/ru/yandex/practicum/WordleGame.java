@@ -65,7 +65,6 @@ public class WordleGame {
         System.out.println("Обратная связь: " + feedback.toString());
         return feedback.toString();
     }
-    
     // Метод для предложения слова- подсказки
     public List<String> suggestWord() {
         List<String> suggestions = new ArrayList<>();
@@ -76,7 +75,6 @@ public class WordleGame {
         }
         return suggestions;
     }
-
     // получение подсказки на основе предыдущих вводов
     public String getHint(String mask, List<String> userInputs) {
         if (hints.containsKey(mask)) {
