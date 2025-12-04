@@ -19,12 +19,12 @@ import java.util.Random;
 не забудьте про специальные типы исключений для игровых и неигровых ошибок
  */
 public class WordleGame {
-    private String answer;
-    private int steps;
     private final WordleDictionary dictionary;
     private final List<String> userInputs;
     private final LinkedHashMap<String, String> hints = new LinkedHashMap<>();
     private final PrintStream log;
+    private String answer;
+    private int steps;
 
     public WordleGame(WordleDictionary dictionary) {
 

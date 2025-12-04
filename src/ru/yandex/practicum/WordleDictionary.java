@@ -17,14 +17,25 @@ public class WordleDictionary {
         this.dictionary = dictionary;
     }
 
+    public static String normaliseWord(String word) {
+        return word.toLowerCase().replace("ё", "е").trim();
+    }
+
+    // метод для побуквенной проверки слов и подсчёта количества совпадений
+    public static int compareWordsByLetters(String word1, String word2) {
+        int matches = 0;
+        for (int i = 0; i < Math.min(word1.length(), word2.length()); i++) {
+            if (word1.charAt(i) == word2.charAt(i)) {
+                matches++;
+            }
+        }
+        return matches;
+    }
+
     public String getRandomWord() {
         Random random = new Random();
         int index = random.nextInt(dictionary.size());
         return dictionary.get(index);
-    }
-
-    public static String normaliseWord(String word) {
-        return word.toLowerCase().replace("ё", "е").trim();
     }
 
     // Метод для добавления слова
@@ -47,17 +58,6 @@ public class WordleDictionary {
             throw new WordNotFoundException("Слово не найдено в словаре: " + word);
         }
         return true;
-    }
-
-    // метод для побуквенной проверки слов и подсчёта количества совпадений
-    public static int compareWordsByLetters(String word1, String word2) {
-        int matches = 0;
-        for (int i = 0; i < Math.min(word1.length(), word2.length()); i++) {
-            if (word1.charAt(i) == word2.charAt(i)) {
-                matches++;
-            }
-        }
-        return matches;
     }
 
 }
