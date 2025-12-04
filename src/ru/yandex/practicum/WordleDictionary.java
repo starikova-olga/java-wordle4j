@@ -39,7 +39,7 @@ public class WordleDictionary {
         }
     }
     // Метод проверки наличия слова в словаре
-    public boolean isWorldInDictionary(String word) throws WordNotFoundException {
+    public boolean isWordInDictionary(String word) throws WordNotFoundException {
         word = normaliseWord(word);
         if (!dictionary.contains(word)) {
             throw new WordNotFoundException("Слово не найдено в словаре: " + word);

@@ -3,6 +3,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /*
@@ -30,44 +32,63 @@ Wordle wordle = new Wordle(log);
 WordleDictionaryLoader loader = new WordleDictionaryLoader(log);
 WordleDictionary dictionary = loader.LoadDictionary(WORDS_FILE);
     WordleGame game = new WordleGame(dictionary);
-    wordle.playGame(game);
+
+    String mask = "+++++";
+    wordle.playGame(game, dictionary, mask);
 } catch (IOException e) {
     e.printStackTrace();
 } catch (WordNotFoundException e) {
     throw new RuntimeException(e);
 }
     }
-    private void playGame(WordleGame game) throws WordNotFoundException {
+
+
+
+    private void playGame(WordleGame game, WordleDictionary dictionary, String mask) throws WordNotFoundException {
         game.startGame();
         log.println("Добро пожаловать в игру");
         Scanner scanner = new Scanner(System.in);
-        int attemptsLeft = 6;
+
+        List<String> userInputs = new ArrayList<>();
         System.out.println("Угадайте слово из 5 букв, у вас есть 6 попыток \nEnter - ввод слова или подсказка");
 
-        while (attemptsLeft > 0) {
-            System.out.println("Ждём ввода слова (осталось попыток): " + attemptsLeft + ")");
+        while (game.getSteps() > 0) {
+            System.out.println("Ждём ввода слова (осталось попыток): " + game.getSteps() + ")");
             String candidate = scanner.nextLine();
 
             if (candidate.isEmpty()) {
                 log.println("Пользователь воспользовался подсказкой.");
-                String hint = game.getHint();
+                String hint = game.getHint(mask, userInputs);
 
                 log.println("Подсказка: " + hint);
+                System.out.println("Подсказка: " +hint);
                 continue;
             }
+            try {
+                if (!dictionary.isWordInDictionary(candidate)) {
+
+                System.out.println("Слово не найдено в словаре. Попробуйте другое слово.");
+                log.println("Неверное слово: " + candidate);
+                continue;
+            }
+        } catch (WordNotFoundException e) {
+                System.out.println(e.getMessage());
+            }
+
             log.println("Пользователь ввёл слово: " + candidate);
             String feedBack = game.compareWords(candidate, game.getAnswer());
+            log.println("Обратная связь: " + feedBack);
 
             if (feedBack.equals("+++++")) {
                 log.println("Поздравляем,вы выиграли!");
                 break;
             }
-
-            attemptsLeft--;
+            game.decreaseAttempts();
         }
-        if (attemptsLeft == 0) {
-            log.println("Вы проиграли. Загаданное слово было: " + game.suggestWord());
+        if (game.getSteps() == 0) {
+            log.println("Вы проиграли. Загаданное слово было: " + game.getAnswer());
 
+            System.out.println("Вы проиграли. Загаданное слово: " + game.getAnswer());
 
 
         }
