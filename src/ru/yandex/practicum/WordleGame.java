@@ -41,10 +41,8 @@ public class WordleGame {
         } while (randomWord.length() != 5);
         randomWord = WordleDictionary.normaliseWord(randomWord);
         answer = randomWord;
-
-
     }
-    
+
     public String compareWords(String rawCandidate, String solution) {
 
         String candidate = WordleDictionary.normaliseWord(rawCandidate);
@@ -64,11 +62,9 @@ public class WordleGame {
                 feedback.append("-");
             }
         }
-
         System.out.println("Обратная связь: " + feedback.toString());
         return feedback.toString();
     }
-
     // Метод для предложения слова- подсказки
     public List<String> suggestWord() {
         List<String> suggestions = new ArrayList<>();
@@ -101,7 +97,6 @@ public class WordleGame {
                 int index = random.nextInt(filteredWords.size());
                 String hint = filteredWords.get(index);
 
-
                 return hint;
             }
         }
@@ -118,7 +113,6 @@ public class WordleGame {
                         return false;
                     }
                     break;
-
                 case '-':
                     if (word.indexOf(letter) != -1) {
                         return false;
@@ -135,7 +129,6 @@ public class WordleGame {
         return true;
     }
 
-
     public String getAnswer() {
         return answer;
     }
@@ -147,6 +140,5 @@ public class WordleGame {
     public void decreaseAttempts() {
         steps--;
     }
-
 }
 
