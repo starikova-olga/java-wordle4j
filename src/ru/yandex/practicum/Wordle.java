@@ -31,7 +31,7 @@ public class Wordle {
         try (PrintWriter log = new PrintWriter(new FileWriter("log.txt"))) {
             Wordle wordle = new Wordle(log);
             WordleDictionaryLoader loader = new WordleDictionaryLoader(log);
-            WordleDictionary dictionary = loader.LoadDictionary(WORDS_FILE);
+            WordleDictionary dictionary = loader.loadDictionary(WORDS_FILE);
             WordleGame game = new WordleGame(dictionary);
 
             String mask = "+++++";

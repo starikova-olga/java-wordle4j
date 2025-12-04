@@ -22,7 +22,7 @@ public class WordleDictionaryLoader {
         this.log = log;
     }
 
-    public WordleDictionary LoadDictionary(String fileName) throws IOException {
+    public WordleDictionary loadDictionary(String fileName) throws IOException {
         List<String> words = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), StandardCharsets.UTF_8))) {
             String line;
