@@ -21,10 +21,10 @@ import java.util.Random;
 public class WordleGame {
     private String answer;
     private int steps;
-    private WordleDictionary dictionary;
-    private List<String> userInputs;
-    private LinkedHashMap<String, String> hints = new LinkedHashMap<>();
-    private PrintStream log;
+    private final WordleDictionary dictionary;
+    private final List<String> userInputs;
+    private final LinkedHashMap<String, String> hints = new LinkedHashMap<>();
+    private final PrintStream log;
 
     public WordleGame(WordleDictionary dictionary) {
 
@@ -62,9 +62,10 @@ public class WordleGame {
                 feedback.append("-");
             }
         }
-        System.out.println("Обратная связь: " + feedback.toString());
+        System.out.println("Обратная связь: " + feedback);
         return feedback.toString();
     }
+
     // Метод для предложения слова- подсказки
     public List<String> suggestWord() {
         List<String> suggestions = new ArrayList<>();
@@ -75,6 +76,7 @@ public class WordleGame {
         }
         return suggestions;
     }
+
     // получение подсказки на основе предыдущих вводов
     public String getHint(String mask, List<String> userInputs) {
         if (hints.containsKey(mask)) {
@@ -118,8 +120,7 @@ public class WordleGame {
                     }
                     break;
                 case '^':
-                    if (!word.substring(0, i).contains(String.valueOf(letter)) &&
-                            !word.substring(i + 1).contains(String.valueOf(letter))) {
+                    if (!word.substring(0, i).contains(String.valueOf(letter)) && !word.substring(i + 1).contains(String.valueOf(letter))) {
                         return false;
                     }
                     break;
