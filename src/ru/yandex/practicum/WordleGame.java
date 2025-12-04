@@ -36,14 +36,14 @@ public class WordleGame {
     public void startGame() {
         steps = 6;
         String randomWord;
-    do {
-        randomWord = dictionary.getRandomWord();
-    } while (randomWord.length() != 5);
-randomWord = WordleDictionary.normaliseWord(randomWord);
-answer = randomWord;
+        do {
+            randomWord = dictionary.getRandomWord();
+        } while (randomWord.length() != 5);
+        randomWord = WordleDictionary.normaliseWord(randomWord);
+        answer = randomWord;
+
+
     }
-
-
     public String compareWords(String rawCandidate, String solution) {
 
         String candidate = WordleDictionary.normaliseWord(rawCandidate);
@@ -51,6 +51,7 @@ answer = randomWord;
             throw new IllegalArgumentException("Слово уже было использовано.");
         }
         StringBuilder feedback = new StringBuilder();
+
         for (int i = 0; i < candidate.length(); i++) {
             char candidateChar = candidate.charAt(i);
             char solutionChar = solution.charAt(i);
@@ -63,8 +64,8 @@ answer = randomWord;
             }
         }
 
-        System.out.println("Обратная связь: "+ feedback.toString());
-        return  feedback.toString();
+        System.out.println("Обратная связь: " + feedback.toString());
+        return feedback.toString();
     }
 
     // Метод для предложения слова- подсказки
@@ -99,13 +100,12 @@ answer = randomWord;
                 int index = random.nextInt(filteredWords.size());
                 String hint = filteredWords.get(index);
 
-                log.println("Подсказка: " + hint);
-
 
                 return hint;
             }
         }
     }
+
     private boolean isValidHint(String word, String mask) {
         for (int i = 0; i < word.length(); i++) {
             char letter = word.charAt(i);
@@ -138,9 +138,11 @@ answer = randomWord;
     public String getAnswer() {
         return answer;
     }
+
     public int getSteps() {
         return steps;
     }
+
     public void decreaseAttempts() {
         steps--;
     }

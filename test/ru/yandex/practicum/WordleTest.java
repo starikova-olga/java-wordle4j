@@ -28,9 +28,9 @@ dictionary.add("муляж");
     void setUp() {
         PrintWriter log= new PrintWriter(System.out);
 
-
         game = new WordleGame(new WordleDictionary(dictionary));
     }
+
     @Test
     void getHintsTest() {
     List<String> userInputs = new ArrayList<>();

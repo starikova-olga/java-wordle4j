@@ -2,8 +2,6 @@ package ru.yandex.practicum;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -23,6 +21,7 @@ public class WordleDictionaryLoader {
     public WordleDictionaryLoader(PrintWriter log) {
         this.log = log;
     }
+
     public WordleDictionary LoadDictionary(String fileName) throws IOException {
         List<String> words = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), StandardCharsets.UTF_8))) {
@@ -30,7 +29,7 @@ public class WordleDictionaryLoader {
             while ((line = reader.readLine()) != null) {
                 words.add(line);
             }
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             throw new IOException("Ошибка при чтении файла", e);
         }

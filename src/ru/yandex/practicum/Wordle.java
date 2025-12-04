@@ -1,5 +1,5 @@
 package ru.yandex.practicum;
-import java.io.File;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,8 +18,8 @@ import java.util.Scanner;
  */
 
 public class Wordle {
-public static final String WORDS_FILE = "words_ru.txt";
-private final PrintWriter log;
+    public static final String WORDS_FILE = "words_ru.txt";
+    private final PrintWriter log;
 
     public Wordle(PrintWriter log) {
         this.log = log;
@@ -27,21 +27,21 @@ private final PrintWriter log;
 
 
     public static void main(String[] args) {
-try (PrintWriter log = new PrintWriter(new FileWriter("log.txt"))){
-Wordle wordle = new Wordle(log);
-WordleDictionaryLoader loader = new WordleDictionaryLoader(log);
-WordleDictionary dictionary = loader.LoadDictionary(WORDS_FILE);
-    WordleGame game = new WordleGame(dictionary);
 
-    String mask = "+++++";
-    wordle.playGame(game, dictionary, mask);
-} catch (IOException e) {
-    e.printStackTrace();
-} catch (WordNotFoundException e) {
-    throw new RuntimeException(e);
-}
+        try (PrintWriter log = new PrintWriter(new FileWriter("log.txt"))) {
+            Wordle wordle = new Wordle(log);
+            WordleDictionaryLoader loader = new WordleDictionaryLoader(log);
+            WordleDictionary dictionary = loader.LoadDictionary(WORDS_FILE);
+            WordleGame game = new WordleGame(dictionary);
+
+            String mask = "+++++";
+            wordle.playGame(game, dictionary, mask);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (WordNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
-
 
 
     private void playGame(WordleGame game, WordleDictionary dictionary, String mask) throws WordNotFoundException {
@@ -53,25 +53,35 @@ WordleDictionary dictionary = loader.LoadDictionary(WORDS_FILE);
         System.out.println("Угадайте слово из 5 букв, у вас есть 6 попыток \nEnter - ввод слова или подсказка");
 
         while (game.getSteps() > 0) {
+
             System.out.println("Ждём ввода слова (осталось попыток): " + game.getSteps() + ")");
+
             String candidate = scanner.nextLine();
+
 
             if (candidate.isEmpty()) {
                 log.println("Пользователь воспользовался подсказкой.");
                 String hint = game.getHint(mask, userInputs);
 
                 log.println("Подсказка: " + hint);
-                System.out.println("Подсказка: " +hint);
+                System.out.println("Подсказка: " + hint);
+                continue;
+
+
+            } else if (candidate.length() == 5) {
+                userInputs.add(candidate);
+            } else {
+                System.out.println("Слово должно состоять из 5 букв.");
                 continue;
             }
             try {
                 if (!dictionary.isWordInDictionary(candidate)) {
 
-                System.out.println("Слово не найдено в словаре. Попробуйте другое слово.");
-                log.println("Неверное слово: " + candidate);
-                continue;
-            }
-        } catch (WordNotFoundException e) {
+                    System.out.println("Слово не найдено в словаре. Попробуйте другое слово.");
+                    log.println("Неверное слово: " + candidate);
+                    continue;
+                }
+            } catch (WordNotFoundException e) {
                 System.out.println(e.getMessage());
             }
 
@@ -89,7 +99,6 @@ WordleDictionary dictionary = loader.LoadDictionary(WORDS_FILE);
             log.println("Вы проиграли. Загаданное слово было: " + game.getAnswer());
 
             System.out.println("Вы проиграли. Загаданное слово: " + game.getAnswer());
-
 
         }
 
