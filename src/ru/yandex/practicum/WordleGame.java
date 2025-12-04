@@ -44,6 +44,7 @@ public class WordleGame {
 
 
     }
+    
     public String compareWords(String rawCandidate, String solution) {
 
         String candidate = WordleDictionary.normaliseWord(rawCandidate);
