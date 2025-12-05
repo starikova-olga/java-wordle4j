@@ -25,6 +25,7 @@ public class WordleGame {
     private final PrintStream log;
     private String answer;
     private int steps;
+    private String candidate;
 
     public WordleGame(WordleDictionary dictionary) {
 
@@ -78,7 +79,8 @@ public class WordleGame {
     }
 
     // получение подсказки на основе предыдущих вводов
-    public String getHint(String mask, List<String> userInputs) {
+    public String getHint(String mask, List<String> userInputs, String candidate) {
+
         if (hints.containsKey(mask)) {
             return hints.get(mask);
         } else {
@@ -87,10 +89,11 @@ public class WordleGame {
             List<String> filteredWords = new ArrayList<>();
 
             for (String word : possibleWords) {
-                if (!userInputs.contains(word) && isValidHint(word, mask)) {
+                if (!userInputs.contains(word) && isMatch(word, mask, candidate)) {         //isValidHint(word, mask
                     filteredWords.add(word);
                 }
             }
+
             if (filteredWords.isEmpty()) {
                 return "Подсказка недоступна";
             } else {
@@ -103,30 +106,32 @@ public class WordleGame {
         }
     }
 
-    private boolean isValidHint(String word, String mask) {
-        if (word.length() != mask.length()) {
+    public boolean isMatch(String word, String mask, String candidate) {
+        if (word == null || mask == null || candidate == null) {
             return false;
         }
-        for (int i = 0; i < word.length(); i++) {
-            char letter = word.charAt(i);
-            char maskSymbol = mask.charAt(i);
 
-            switch (maskSymbol) {
+        if (candidate.isEmpty()) {
+            return true;
+        }
+
+        for (int i = 0; i < 5; i++) {
+            char w = word.toLowerCase().charAt(i);
+            char m = mask.charAt(i);
+            char c = candidate.toLowerCase().charAt(i);
+
+            switch (m) {
                 case '+':
-                    if (letter != word.charAt(i)) {
-                        return false;
-                    }
-                    break;
-                case '-':
-                    if (word.indexOf(mask.charAt(i)) != -1) {
-                        return false;
-                    }
-                    break;
+                    if (w != c) return false;
+                    else break;
                 case '^':
-                    if (!word.substring(0, i).contains(String.valueOf(letter)) || word.substring(i + 1).contains(String.valueOf(letter))) {
-                        return false;
-                    }
-                    break;
+                    if (!candidate.toLowerCase().contains(w + "") || c == w) return false;
+                    else break;
+                case '-':
+                    if (candidate.toLowerCase().contains(w + "")) return false;
+                    else break;
+                default:
+                    throw new RuntimeException("unexpected mask symbol: " + m);
             }
         }
         return true;
@@ -144,4 +149,5 @@ public class WordleGame {
         steps--;
     }
 }
+
 

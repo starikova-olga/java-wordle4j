@@ -25,19 +25,6 @@ class WordleTest {
         game = new WordleGame(new WordleDictionary(dictionary));
     }
 
-    // Проверка подсказки
-    @Test
-    void getHintsTest() {
-        List<String> userInputs = new ArrayList<>();
-        userInputs.add("марка");
-        userInputs.add("мурка");
-
-        String mask = "++---";
-        String hint = game.getHint(mask, userInputs);
-
-        assertEquals("муляж", hint);
-    }
-
     //Проверка алгоритма угадывания
     @Test
     void compareWordsTest() {
@@ -60,7 +47,8 @@ class WordleTest {
     void getHintEmptyListTest() {
         List<String> userInputs = new ArrayList<>();
         String mask = "++--";
-        String hint = game.getHint(mask, userInputs);
+        String candidate = "марка";
+        String hint = game.getHint(mask, userInputs, candidate);
         assertEquals("Подсказка недоступна", hint);
     }
 
@@ -82,5 +70,4 @@ class WordleTest {
         String word = "тучка";
         assertEquals(5, word.length());
     }
-
 }

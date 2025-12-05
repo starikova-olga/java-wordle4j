@@ -57,10 +57,9 @@ public class Wordle {
 
             String candidate = scanner.nextLine();
 
-
             if (candidate.isEmpty()) {
                 log.println("Пользователь воспользовался подсказкой.");
-                String hint = game.getHint(mask, userInputs);
+                String hint = game.getHint(mask, userInputs, candidate);
 
                 log.println("Подсказка: " + hint);
                 System.out.println("Подсказка: " + hint);
