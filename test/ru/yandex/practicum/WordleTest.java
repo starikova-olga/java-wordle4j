@@ -1,38 +1,31 @@
 package ru.yandex.practicum;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WordleTest {
     private static List<String> dictionary;
     private WordleGame game;
 
-    @BeforeAll
-    static void setUpClass() {
-        dictionary = new ArrayList<>();
-        dictionary.add("марка");
-        dictionary.add("тучка");
-        dictionary.add("муляж");
-
-    }
 
     @BeforeEach
     void setUp() {
         PrintWriter log = new PrintWriter(System.out);
+        dictionary = Arrays.asList("марка", "мурка", "муляж", "тучка");
 
         game = new WordleGame(new WordleDictionary(dictionary));
     }
 
+    // Проверка подсказки
     @Test
     void getHintsTest() {
         List<String> userInputs = new ArrayList<>();
@@ -45,6 +38,7 @@ class WordleTest {
         assertEquals("муляж", hint);
     }
 
+    //Проверка алгоритма угадывания
     @Test
     void compareWordsTest() {
         String guess = "марка";

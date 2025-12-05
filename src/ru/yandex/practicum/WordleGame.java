@@ -104,6 +104,9 @@ public class WordleGame {
     }
 
     private boolean isValidHint(String word, String mask) {
+        if (word.length() != mask.length()) {
+            return false;
+        }
         for (int i = 0; i < word.length(); i++) {
             char letter = word.charAt(i);
             char maskSymbol = mask.charAt(i);
@@ -115,12 +118,12 @@ public class WordleGame {
                     }
                     break;
                 case '-':
-                    if (word.indexOf(letter) != -1) {
+                    if (word.indexOf(mask.charAt(i)) != -1) {
                         return false;
                     }
                     break;
                 case '^':
-                    if (!word.substring(0, i).contains(String.valueOf(letter)) && !word.substring(i + 1).contains(String.valueOf(letter))) {
+                    if (!word.substring(0, i).contains(String.valueOf(letter)) || word.substring(i + 1).contains(String.valueOf(letter))) {
                         return false;
                     }
                     break;
