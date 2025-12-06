@@ -2,9 +2,12 @@ package ru.yandex.practicum;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 /*
 в этом классе хранится словарь и состояние игры
@@ -19,15 +22,17 @@ import java.util.Random;
 не забудьте про специальные типы исключений для игровых и неигровых ошибок
  */
 public class WordleGame {
-    private final WordleDictionary dictionary;
     private final List<String> userInputs;
-    private final LinkedHashMap<String, String> hints = new LinkedHashMap<>();
     private final PrintStream log;
     private String answer;
-    private int steps;
+    private int steps = 6;
     private String candidate;
+    private List<String> dictionary;
+    private Set<String> invalidWords = new HashSet<>();
+    private Map<Integer, Character> correctLetters = new HashMap<>();
 
-    public WordleGame(WordleDictionary dictionary) {
+
+    public WordleGame(List<String> dictionary) {
 
         this.dictionary = dictionary;
         this.userInputs = new ArrayList<>();
@@ -35,10 +40,11 @@ public class WordleGame {
     }
 
     public void startGame() {
-        steps = 6;
+        Random random = new Random();
+
         String randomWord;
         do {
-            randomWord = dictionary.getRandomWord();
+            randomWord = dictionary.get(random.nextInt(dictionary.size()));
         } while (randomWord.length() != 5);
         randomWord = WordleDictionary.normaliseWord(randomWord);
         answer = randomWord;
@@ -63,46 +69,44 @@ public class WordleGame {
                 feedback.append("-");
             }
         }
-        System.out.println("Обратная связь: " + feedback);
+        System.out.println(feedback);
         return feedback.toString();
     }
 
     // Метод для предложения слова- подсказки
     public List<String> suggestWord() {
         List<String> suggestions = new ArrayList<>();
-        for (String word : dictionary.dictionary) {
+        for (String word : dictionary)
             if (!userInputs.contains(word) && word.length() == 5) {
                 suggestions.add(word);
             }
-        }
         return suggestions;
     }
 
     // получение подсказки на основе предыдущих вводов
     public String getHint(String mask, List<String> userInputs, String candidate) {
 
-        if (hints.containsKey(mask)) {
-            return hints.get(mask);
+        List<String> possibleWords = suggestWord();
+        List<String> filteredWords = new ArrayList<>();
+
+        for (String word : possibleWords) {
+            if (!invalidWords.contains(word) && isMatch(word, mask, candidate)) {
+                filteredWords.add(word);
+            }
+
+        }
+        if (filteredWords.isEmpty()) {
+            return "Подсказка недоступна";
         } else {
+            Random random = new Random();
+            int index = random.nextInt(filteredWords.size());
+            String hint = filteredWords.get(index);
 
-            List<String> possibleWords = suggestWord();
-            List<String> filteredWords = new ArrayList<>();
 
-            for (String word : possibleWords) {
-                if (!userInputs.contains(word) && isMatch(word, mask, candidate)) {         //isValidHint(word, mask
-                    filteredWords.add(word);
-                }
+            if (!isMatch(hint, mask, candidate)) {
+                invalidWords.add(hint);
             }
-
-            if (filteredWords.isEmpty()) {
-                return "Подсказка недоступна";
-            } else {
-                Random random = new Random();
-                int index = random.nextInt(filteredWords.size());
-                String hint = filteredWords.get(index);
-
-                return hint;
-            }
+            return hint;
         }
     }
 
@@ -137,6 +141,24 @@ public class WordleGame {
         return true;
     }
 
+    public boolean isValidWord(String word) {
+        if (word.length() != 5) {
+            return false;
+        }
+
+        for (char c : word.toCharArray()) {
+            if (Character.isDigit(c) || Character.isWhitespace(c)) {
+                return false;
+            }
+        }
+
+        if (!dictionary.contains(word)) {
+            return false;
+        }
+
+        return true;
+    }
+
     public String getAnswer() {
         return answer;
     }
@@ -149,5 +171,4 @@ public class WordleGame {
         steps--;
     }
 }
-
 

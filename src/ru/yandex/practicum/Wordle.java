@@ -32,7 +32,8 @@ public class Wordle {
             Wordle wordle = new Wordle(log);
             WordleDictionaryLoader loader = new WordleDictionaryLoader(log);
             WordleDictionary dictionary = loader.loadDictionary(WORDS_FILE);
-            WordleGame game = new WordleGame(dictionary);
+            List<String> words = dictionary.getWords();
+            WordleGame game = new WordleGame(words);
 
             String mask = "+++++";
             wordle.playGame(game, dictionary, mask);
@@ -61,12 +62,18 @@ public class Wordle {
                 log.println("Пользователь воспользовался подсказкой.");
                 String hint = game.getHint(mask, userInputs, candidate);
 
+
+                if (hint != null) {
+                    game.decreaseAttempts();
+                }
+
                 log.println("Подсказка: " + hint);
                 System.out.println("Подсказка: " + hint);
                 continue;
             } else if (candidate.length() == 5) {
                 userInputs.add(candidate);
             } else {
+
                 System.out.println("Слово должно состоять из 5 букв.");
                 continue;
             }
@@ -81,15 +88,26 @@ public class Wordle {
                 System.out.println(e.getMessage());
             }
 
+
+            if (game.isValidWord(candidate)) {
+
+                game.decreaseAttempts();
+
+            } else {
+                System.out.println("Слово не соответствует требованиям.");
+
+            }
+
             log.println("Пользователь ввёл слово: " + candidate);
             String feedBack = game.compareWords(candidate, game.getAnswer());
             log.println("Обратная связь: " + feedBack);
 
             if (feedBack.equals("+++++")) {
+
                 log.println("Поздравляем,вы выиграли!");
                 break;
             }
-            game.decreaseAttempts();
+
         }
 
         if (game.getSteps() == 0) {
@@ -100,3 +118,4 @@ public class Wordle {
         }
     }
 }
+

@@ -60,5 +60,8 @@ public class WordleDictionary {
         return true;
     }
 
+    public List<String> getWords() {
+        return  dictionary;
+    }
 }
 
