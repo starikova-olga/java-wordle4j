@@ -1,6 +1,11 @@
 package ru.yandex.practicum;
 
+
+import exceptions.EmptyWordException;
+import exceptions.WordNotFoundException;
+
 import java.util.List;
+import java.util.Random;
 
 /*
 этот класс содержит в себе список слов List<String>
@@ -9,6 +14,57 @@ import java.util.List;
  */
 public class WordleDictionary {
 
-    private List<String> words;
+    List<String> dictionary;
 
+    public WordleDictionary(List<String> dictionary) {
+        this.dictionary = dictionary;
+    }
+
+    public static String normaliseWord(String word) {
+        return word.toLowerCase().replace("ё", "е").trim();
+    }
+
+    // метод для побуквенной проверки слов и подсчёта количества совпадений
+    public static int compareWordsByLetters(String word1, String word2) {
+        int matches = 0;
+        for (int i = 0; i < Math.min(word1.length(), word2.length()); i++) {
+            if (word1.charAt(i) == word2.charAt(i)) {
+                matches++;
+            }
+        }
+        return matches;
+    }
+
+    public String getRandomWord() {
+        Random random = new Random();
+        int index = random.nextInt(dictionary.size());
+        return dictionary.get(index);
+    }
+
+    // Метод для добавления слова
+    public void addWord(String word) throws EmptyWordException {
+        if (word == null || word.isEmpty()) {
+            throw new EmptyWordException("Введённое слово не должно быть пустым.");
+        }
+        if (word.length() == 5) {
+            word = normaliseWord(word);
+            dictionary.add(word);
+        } else {
+            System.out.println("Слово должно содержать ровно 5 символов.");
+        }
+    }
+
+    // Метод проверки наличия слова в словаре
+    public boolean isWordInDictionary(String word) throws WordNotFoundException {
+        word = normaliseWord(word);
+        if (!dictionary.contains(word)) {
+            throw new WordNotFoundException("Слово не найдено в словаре: " + word);
+        }
+        return true;
+    }
+
+    public List<String> getWords() {
+        return  dictionary;
+    }
 }
+
