@@ -1,6 +1,9 @@
 package ru.yandex.practicum;
 
 
+import exceptions.EmptyWordException;
+import exceptions.WordNotFoundException;
+
 import java.util.List;
 import java.util.Random;
 

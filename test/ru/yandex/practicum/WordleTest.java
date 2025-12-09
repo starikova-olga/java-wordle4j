@@ -2,11 +2,13 @@ package ru.yandex.practicum;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -24,8 +26,8 @@ class WordleTest {
     // проверка запуска игры и выбора случайного слова
     @Test
     void testStartGame() {
-         dictionary = Arrays.asList("марка", "мурка", "муляж", "тучка");
-         game = new WordleGame(dictionary);
+        dictionary = Arrays.asList("марка", "мурка", "муляж", "тучка");
+        game = new WordleGame(dictionary);
         game.startGame();
         assertNotNull(game.getAnswer());
         assertEquals(5, game.getAnswer().length());
@@ -42,8 +44,8 @@ class WordleTest {
     // проверка предложения слов для подсказки
     @Test
     void testSuggestWord() {
-         dictionary = Arrays.asList("марка", "мурка", "муляж", "тучка");
-         game = new WordleGame(dictionary);
+        dictionary = Arrays.asList("марка", "мурка", "муляж", "тучка");
+        game = new WordleGame(dictionary);
         List<String> suggestions = game.suggestWord();
 
         for (String word : suggestions) {

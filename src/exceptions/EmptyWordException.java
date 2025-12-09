@@ -1,6 +1,6 @@
-package ru.yandex.practicum;
+package exceptions;
 
-public class EmptyWordException extends Exception {
+public class EmptyWordException extends RuntimeException {
     public EmptyWordException(String message) {
         super(message);
     }

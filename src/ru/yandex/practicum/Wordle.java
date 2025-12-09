@@ -1,5 +1,7 @@
 package ru.yandex.practicum;
 
+import exceptions.WordNotFoundException;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -50,13 +52,18 @@ public class Wordle {
         Scanner scanner = new Scanner(System.in);
 
         List<String> userInputs = new ArrayList<>();
-        System.out.println("Угадайте слово из 5 букв, у вас есть 6 попыток \nEnter - ввод слова или подсказка");
+        System.out.println("Угадайте слово из 5 букв, у вас есть 6 попыток \nEnter - ввод слова или подсказка \n стоп - выход из программы");
 
         while (game.getSteps() > 0) {
 
             System.out.println("Ждём ввода слова (осталось попыток): " + game.getSteps() + ")");
 
             String candidate = scanner.nextLine();
+
+            if ("стоп".equals(candidate)) {
+                System.out.println("Игра завершена по вашему желанию.");
+                break;
+            }
 
             if (candidate.isEmpty()) {
                 log.println("Пользователь воспользовался подсказкой.");

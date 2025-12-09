@@ -30,8 +30,8 @@ public class WordleDictionaryLoader {
                 words.add(line);
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new IOException("Ошибка при чтении файла", e);
+            log.println("Ошибка при чтении файла");
+            throw e;
         }
         return new WordleDictionary(words);
     }
